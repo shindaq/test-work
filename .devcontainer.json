@@ -1,0 +1,14 @@
+{
+    "image": "templateofclientservermatching_app:latest",
+    "runArgs": [],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "llvm-vs-code-extensions.vscode-clangd",
+            ]
+        }
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+    "workspaceFolder": "/app",
+    "onCreateCommand": "apt update && apt install -y git && git config --global --add safe.directory /"
+}
