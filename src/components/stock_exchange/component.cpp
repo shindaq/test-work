@@ -29,8 +29,8 @@ int GetOperationTypeMultiplier(models::OperationTypes type) {
 }
 }  // namespace
 
-StockClient::StockClient(const std::string& pg_connection)
-    : pg_connection_{pg_connection} {}
+StockClient::StockClient()
+    : pg_connection_{configs::DBConnection} {}
 
 StockClient::~StockClient() {
   LOG_INFO(fmt::format("User [{}] disconnected", user_id_string_));
@@ -75,7 +75,7 @@ std::string StockClient::AddRequisition(
 
   result = match_requisition(requisition.operation_type, user_id_string_);
   auto volume = requisition.volume;
-  while (result.affected_rows() && volume > 0) {
+  while (result.affected_rows()) {
     const auto& matched_requisition = FormRequisition(result);
     ProceedDeal(trx, volume, requisition, matched_requisition, requisition_id);
     result = match_requisition(requisition.operation_type, user_id_string_);
@@ -115,7 +115,9 @@ void StockClient::ProceedDeal(pqxx::work& trx, int& volume,
                                matched_requisition.volume * multiplier,
                                -rub_income * multiplier});
   volume -= matched_requisition.volume;
-
+  if (volume == 0) {
+    trx.exec_params(sql::kUpdateRequisitionStatus, requisition_id);
+  }
   std::string buyer_id = "";
   std::string seller_id = "";
 

@@ -10,6 +10,7 @@
 #include "components/stock_exchange/component.hpp"
 #include "dto/request.hpp"
 #include "utils/json.hpp"
+#include "configs/config.hpp"
 
 namespace components {
 namespace asio = boost::asio;

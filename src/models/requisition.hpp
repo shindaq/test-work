@@ -2,7 +2,6 @@
 
 #include <array>
 #include <nlohmann/json.hpp>
-#include <stdexcept>
 #include <string_view>
 #include <utility>
 

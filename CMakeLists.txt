@@ -13,6 +13,11 @@ CPMAddPackage("gh:fmtlib/fmt#7.1.3")
 CPMAddPackage("gh:nlohmann/json@3.11.3")
 CPMAddPackage("gh:jtv/libpqxx#7.9.2")
 
+OPTION(ENABLE_GTEST "Enable Google Test" ON)
+IF(ENABLE_GTEST)
+    CPMAddPackage("gh:google/googletest#v1.15.2")
+ENDIF()
+
 ADD_LIBRARY(
     ${PROJECT_NAME}_objs OBJECT 
     src/components/stock_exchange/component.hpp
@@ -37,3 +42,9 @@ ADD_EXECUTABLE(Server src/server.cpp)
 TARGET_LINK_LIBRARIES(Server PRIVATE ${PROJECT_NAME}_objs)
 ADD_EXECUTABLE(Client src/client.cpp)
 TARGET_LINK_LIBRARIES(Client PRIVATE ${PROJECT_NAME}_objs)
+
+IF(ENABLE_GTEST)
+    ADD_EXECUTABLE(tests src/tests/test_main.cpp)
+    TARGET_LINK_LIBRARIES(tests PRIVATE ${PROJECT_NAME}_objs gtest gtest_main)
+    TARGET_INCLUDE_DIRECTORIES(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+ENDIF()

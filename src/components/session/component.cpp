@@ -12,9 +12,7 @@ constexpr std::string_view kTakeBalanceResponsePattern =
     "Your balance:\nRUB: {}\nUSD: {}\n";
 }  // namespace
 
-Session::Session(asio::io_service& io_service)
-    : socket_(io_service),
-      stock_client_("postgres://postgres:postgres@localhost:5432") {}
+Session::Session(asio::io_service& io_service) : socket_(io_service) {}
 
 asio::ip::tcp::socket& Session::Socket() { return socket_; }
 

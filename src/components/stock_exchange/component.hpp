@@ -9,11 +9,12 @@
 #include "models/deal.hpp"
 #include "models/requisition.hpp"
 #include "utils/logging.hpp"
+#include "configs/config.hpp"
 
 namespace components {
 class StockClient final {
  public:
-  StockClient(const std::string& pg_connection);
+  StockClient();
   std::string AuthUser(std::string_view name);
   std::string AddRequisition(const models::Requisition& requisition);
   dto::UserBalance TakeUserInfo();

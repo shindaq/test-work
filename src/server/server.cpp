@@ -6,7 +6,7 @@ constexpr std::string_view kStartInfoPattern = "Server started! Listen {} port";
 
 Server::Server(asio::io_service& io_service)
     : io_service_(io_service),
-      acceptor_(io_service, tcp::endpoint{tcp::v4(), 5555}) {
+      acceptor_(io_service, tcp::endpoint{tcp::v4(), configs::Port}) {
   LOG_INFO(fmt::format(kStartInfoPattern, 5555));
   boost::shared_ptr<components::Session> new_session(
       new components::Session(io_service_));
